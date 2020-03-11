@@ -2,28 +2,48 @@
 
 void infixTopostfix(char *infix, char* postfix)
 {
-    //TODO:implement
+    //TODO:Test and debug : why does it terminate after the '*' ???????
     /*
-     - Single digit numbers
-     - Multi digit numbers
-     - Brackets
-     - Floating point numbers
-     - Negative numbers
+     - Single digit numbers ×
+     - Multi digit numbers ×
+     - Brackets ×
+     - Floating point numbers ×
+     - Negative numbers ×
     */
-    char num[7] = "";char *ch;
+    char num[7] = "";char ch = *infix;
+    unsigned char n = 1;
     Item temp;
     Stack *s = initialize();
-    //while (*infix)
+    for (int i = 0; i < strlen(infix); ++i)
     {
+        if (*infix == '-')
+        {
+            if (*infix == ch) //if its the first character in the expression the its a negative num
+            {
+                strcat(postfix,"-");
+                infix++;
+                continue;
+            }
+
+            else if (*(infix-1) == ' '){ n = 2;} //if theres a space before it gotta check whats before the space
+
+            if ((*(infix-n) != ')') && !isdigit(*(infix-n))) //n is 1 if theres no space so it checks the thing before the - sign
+            {
+                /*if we're here then its def. negative num*/
+                strcat(postfix,"-");
+                infix++;
+                continue;
+            }
+            /*if not a negative then it'll go to the operator condition*/
+        }
         while (isdigit(*infix ) || (*infix   == '.'))
         {
-            //TODO:convert number in infix to float then to prefix
-            *ch = *(infix++);
-            strncat(num,ch, sizeof(char));
+            ch = *(infix++);
+            strncat(num,&ch, sizeof(char));
             //printf("%s",num);
 
         }
-        printf("%s",num);
+        //printf("%s",num);
 
         if (strcmp(num,""))
         {
@@ -34,7 +54,7 @@ void infixTopostfix(char *infix, char* postfix)
         {
             temp.cData = *(infix++);
             push(s,temp);
-        } else if (*(infix++) == ')')
+        } else if (*(infix) == ')')
         {
             while(*(infix++) != '(')
             {
@@ -48,16 +68,22 @@ void infixTopostfix(char *infix, char* postfix)
             {
                 temp.cData = *infix;
                 push(s,temp);
+                infix++;
             } else
             {
                 while (isLower(*infix,temp.cData) || precedence(*infix) == precedence(temp.cData))
                 {
                     push(s,temp);
+                    infix++;
                 }
             }
         }
+        printf("i: %d\n",i);
+        printf("temp: %c, postfix: %s\n",temp.cData,postfix);
     }
-    free(num);
+    //printf("postfix: %s",postfix);
+    printf("empty: %d, top: %c,postfix: %s",(isEmpty(s))?1:0,top(s).cData,postfix);
+    //free(num);
 }
 
 char precedence (char symbol)
@@ -65,10 +91,12 @@ char precedence (char symbol)
     switch (symbol)
     {
         case '+':
+            return 1;
         case '-':
             return 1;
 
         case '*':
+            return 2;
         case '/':
             return 2;
 
