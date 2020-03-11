@@ -14,11 +14,8 @@ void infixTopostfix(char *infix, char* postfix)
     unsigned char n = 1;
     Item temp;
     Stack *s = initialize();
-    //int i = 0;
-    for (int i = 0; i < strlen(infix); i++)
-    //while (*infix != '\0')
+    for (int i = 0; i < strlen(infix); ++i)
     {
-        i++;
         if (*infix == '-')
         {
             if (*infix == ch) //if its the first character in the expression the its a negative num
@@ -71,9 +68,7 @@ void infixTopostfix(char *infix, char* postfix)
             {
                 temp.cData = *infix;
                 push(s,temp);
-                puts("blaBlabla");
                 infix++;
-                puts("blablabla");
             } else
             {
                 while (isLower(*infix,temp.cData) || precedence(*infix) == precedence(temp.cData))
@@ -82,10 +77,6 @@ void infixTopostfix(char *infix, char* postfix)
                     infix++;
                 }
             }
-        } else if (*infix == ' ')
-        {
-            infix++;
-            continue;
         }
         printf("i: %d\n",i);
         printf("temp: %c, postfix: %s\n",temp.cData,postfix);
