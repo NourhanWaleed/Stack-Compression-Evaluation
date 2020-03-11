@@ -14,7 +14,7 @@
 int main() {
     setbuf(stdout,NULL);setbuf(stdin,NULL);
     char *postfix = malloc(100* sizeof(char));
-    infixTopostfix("1+2*4+3",postfix);
+    infixTopostfix("1 + 2 * 4 + 3",postfix);
     free(postfix);
     return 0;
 }
