@@ -18,7 +18,8 @@ void infixTopostfix(char *infix, char* postfix)
     for (int i = 0; i < strlen(infix); i++)
     //while (*infix != '\0')
     {
-        i++;
+        //i++;
+        /*for negative nums*/
         if (*infix == '-')
         {
             if (*infix == ch) //if its the first character in the expression the its a negative num
@@ -39,6 +40,7 @@ void infixTopostfix(char *infix, char* postfix)
             }
             /*if not a negative then it'll go to the operator condition*/
         }
+        /*for numbers*/
         while (isdigit(*infix ) || (*infix   == '.'))
         {
             ch = *(infix++);
@@ -53,7 +55,9 @@ void infixTopostfix(char *infix, char* postfix)
             strcat(postfix,num);
             strcat(postfix," ");
             strcpy(num,"");
-        }else if (*infix == '(')
+        }
+        /*for brackets*/
+        else if (*infix == '(')
         {
             temp.cData = *(infix++);
             push(s,temp);
@@ -64,7 +68,9 @@ void infixTopostfix(char *infix, char* postfix)
                 temp = pop(s);
                 strcat(postfix,&(temp.cData));
             }
-        }else if (is_operator(*(infix)))
+        }
+        /*for operators*/
+        else if (is_operator(*(infix)))
         {
             temp = top(s);
             if (isLower(temp.cData,*infix) || isEmpty(s) || (temp.cData == '('))
@@ -82,7 +88,9 @@ void infixTopostfix(char *infix, char* postfix)
                     infix++;
                 }
             }
-        } else if (*infix == ' ')
+        }
+        /*for spaces*/
+        else if (*infix == ' ')
         {
             infix++;
             continue;
