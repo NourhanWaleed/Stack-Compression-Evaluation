@@ -16,6 +16,8 @@ int main() {
     setbuf(stdout,NULL);setbuf(stdin,NULL);
     char *postfix = malloc(100* sizeof(char));
     infixTopostfix("122.6++",postfix);
+    float number = evaluatePostfix("2 3 4 * +");
+    printf("\nOutput: %f", number);
     free(postfix);
     return 0;
 }
