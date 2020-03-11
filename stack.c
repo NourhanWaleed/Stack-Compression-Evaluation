@@ -20,7 +20,7 @@ Item top(Stack* s) {
 
 Item pop(Stack* s) {
     if (s->top == 0)
-        printf("Empty,can't pop item");
+        printf("Empty,can't pop item\n");
     else {
         return s->stack[--s->top];
     }
@@ -28,7 +28,7 @@ Item pop(Stack* s) {
 
 void push(Stack* s, Item val) {
     if (s->top == Max - 1)
-        printf("Stack overflow,can't push item");
+        printf("Stack overflow,can't push item\n");
     else
         s->stack[s->top++] = val;
 }
