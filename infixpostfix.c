@@ -1,4 +1,5 @@
 #include "functions.h"
+#include<stdlib.h>
 
 void infixTopostfix(char *infix, char* postfix)
 {
@@ -10,7 +11,8 @@ void infixTopostfix(char *infix, char* postfix)
      - Floating point numbers
      - Negative numbers
     */
-    char num[7] = "";char *ch;
+    char num[7] = "";
+    char ch;
     Item temp;
     Stack *s = initialize();
     //while (*infix)
@@ -18,8 +20,8 @@ void infixTopostfix(char *infix, char* postfix)
         while (isdigit(*infix ) || (*infix   == '.'))
         {
             //TODO:convert number in infix to float then to prefix
-            *ch = *(infix++);
-            strncat(num,ch, sizeof(char));
+            ch = *(infix++);
+            strncat(num,&ch, sizeof(char));
             //printf("%s",num);
 
         }
@@ -57,7 +59,7 @@ void infixTopostfix(char *infix, char* postfix)
             }
         }
     }
-    free(num);
+    //free(num);    //not needed since num is not allocated using malloc
 }
 
 char precedence (char symbol)
