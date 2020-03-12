@@ -8,6 +8,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 void infixTopostfix(char *infix, char* postfix);
-float evaluatePostfix(char* postfix);
+float evaluatePostfix(const char* postfix);
 
 #endif //STACK_MYVERSION_FUNCTIONS_H

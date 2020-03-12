@@ -14,7 +14,9 @@
 int main() {
     setbuf(stdout,NULL);setbuf(stdin,NULL);
     char *postfix = malloc(100* sizeof(char));
-    infixTopostfix("2 + 3",postfix);
+    infixTopostfix("2 + ( -2.5 + 3.14 ) * ( -5.4 + 8.1 ) ^ ( -0.5 )",postfix);
+    //float result = evaluatePostfix("22 3 +");
+    //printf("result: %f\n",result);
     free(postfix);
     return 0;
 }

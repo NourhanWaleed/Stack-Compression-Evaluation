@@ -1,8 +1,13 @@
 #include "functions.h"
 
+char num[7] = "";char  tempchar;
+unsigned char n = 1;
+Item temp;
+
+void operator();
 void infixTopostfix(char *infix, char* postfix)
 {
-    //TODO:Test and debug : why does it terminate after the '*' ???????
+    //status: tested, working
     /*
      - Single digit numbers ×
      - Multi digit numbers ×
@@ -10,20 +15,20 @@ void infixTopostfix(char *infix, char* postfix)
      - Floating point numbers ×
      - Negative numbers ×
     */
-    char num[7] = "";char ch = *infix;
-    unsigned char n = 1;
-    Item temp;
+    char ch = *infix;
     Stack *s = initialize();
-    //int i = 0;
-    for (int i = 0; i < strlen(infix); i++)
-    //while (*infix != '\0')
-    {
-        //i++;
+    int length = strlen(infix);
+    for (int i = 0; i < length; i++){
         /*for negative nums*/
         if (*infix == '-')
         {
-            if (*infix == ch) //if its the first character in the expression the its a negative num
+            if (*infix == ch) //if its the first character in the expression then its a negative num
             {
+                strcat(postfix,"-");
+                infix++;
+                continue;
+            }else if(isdigit(*(infix+1))){
+                /*if its followed by a number directly w/o a space then its negative*/
                 strcat(postfix,"-");
                 infix++;
                 continue;
@@ -45,11 +50,7 @@ void infixTopostfix(char *infix, char* postfix)
         {
             ch = *(infix++);
             strncat(num,&ch, sizeof(char));
-            //printf("%s",num);
-
         }
-        //printf("%s",num);
-
         if (strcmp(num,""))
         {
             strcat(postfix,num);
@@ -63,11 +64,15 @@ void infixTopostfix(char *infix, char* postfix)
             push(s,temp);
         } else if (*(infix) == ')')
         {
-            while(*(infix++) != '(')
+            temp = pop(s);
+            while(temp.cData != '(')
             {
-                temp = pop(s);
                 strcat(postfix,&(temp.cData));
+                strcat(postfix," ");
+                if (isEmpty(s)){ break;}
+                else{temp = pop(s);}
             }
+            infix++;
         }
         /*for operators*/
         else if (is_operator(*(infix)))
@@ -77,16 +82,19 @@ void infixTopostfix(char *infix, char* postfix)
             {
                 temp.cData = *infix;
                 push(s,temp);
-                puts("blaBlabla");
                 infix++;
-                puts("blablabla");
             } else
             {
+                char space = ' ';
                 while (isLower(*infix,temp.cData) || precedence(*infix) == precedence(temp.cData))
                 {
-                    push(s,temp);
-                    infix++;
+                    tempchar = (pop(s).cData);
+                    strncat(postfix,&tempchar, sizeof(char));
+                    strcat(postfix,&space);
                 }
+                temp.cData = *infix;
+                push(s,temp);
+                infix++;
             }
         }
         /*for spaces*/
@@ -95,12 +103,14 @@ void infixTopostfix(char *infix, char* postfix)
             infix++;
             continue;
         }
-        printf("i: %d\n",i);
-        printf("temp: %c, postfix: %s\n",temp.cData,postfix);
     }
-    //printf("postfix: %s",postfix);
-    printf("empty: %d, top: %c,postfix: %s",(isEmpty(s))?1:0,top(s).cData,postfix);
-    //free(num);
+    while (!isEmpty(s))
+    {
+        tempchar = pop(s).cData;
+        strncat(postfix,&tempchar, sizeof(char));
+        strcat(postfix," ");
+    }
+    printf("Postfix: %s",postfix);
 }
 
 char precedence (char symbol)
